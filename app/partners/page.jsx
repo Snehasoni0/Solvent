@@ -1,13 +1,15 @@
 import BecomePartner from '@/components/partners/BecomePartner'
+import PartnerBenefits from '@/components/partners/Benefits'
 import PartnersHero from '@/components/partners/ParnterHero'
-import PartnersPage from '@/components/partners/Partner'
+import PartnerDescription from '@/components/partners/PartnersDes'
 import React from 'react'
 
 const page = () => {
   return (
     <>
       <PartnersHero />
-      <PartnersPage />
+      <PartnerDescription />
+      <PartnerBenefits />
       <BecomePartner />
     </>
   )

@@ -17,7 +17,6 @@ const AboutHero = () => {
   return (
     <section className="h-screen w-full bg-white flex flex-col relative overflow-hidden selection:bg-orange-600 selection:text-white">
       
-      {/* 1. ARCHITECTURAL OVERLAY (GRID LINES) */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="h-full w-full grid grid-cols-4 md:grid-cols-12 px-6 md:px-12 opacity-[0.03]">
           {[...Array(12)].map((_, i) => (
@@ -26,7 +25,6 @@ const AboutHero = () => {
         </div>
       </div>
 
-      {/* 2. RESPONSIVE HEADER */}
       <div className="w-full px-6 md:px-12 py-6 flex justify-between items-center shrink-0 z-20">
         <motion.div 
           initial={{ x: -20, opacity: 0 }}
@@ -40,10 +38,8 @@ const AboutHero = () => {
         </motion.div>
       </div>
 
-      {/* 3. MAIN KINETIC CONTENT */}
       <div className="flex-1 w-full px-6 md:px-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 z-10 overflow-y-auto lg:overflow-hidden py-4 md:py-0">
         
-        {/* TEXT COLUMN: Dynamic Fluid Typography */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 md:space-y-10">
           <div className="space-y-2 md:space-y-4">
             <motion.div custom={1} variants={slideUp} initial="hidden" animate="visible" className="flex items-center space-x-2 text-orange-600">
@@ -70,11 +66,9 @@ const AboutHero = () => {
           </motion.div>
         </div>
 
-        {/* INTERACTIVE CARDS: Responsive Modular Grid */}
         <div className="w-full lg:w-1/2 h-full flex flex-col justify-center py-4 lg:py-12">
           <div className="grid grid-cols-2 lg:grid-cols-2 gap-3 md:gap-4 h-full max-h-[500px] lg:max-h-none">
             
-            {/* Card 1: Static Slate */}
             <motion.div 
               whileHover={{ y: -5, scale: 1.01 }}
               className="col-span-1 bg-slate-950 p-5 md:p-8 flex flex-col justify-between rounded-none border-t-4 border-orange-600 shadow-2xl"
@@ -86,7 +80,6 @@ const AboutHero = () => {
               </div>
             </motion.div>
 
-            {/* Card 2: Kinetic Orange */}
             <motion.div 
               whileHover={{ y: -5, scale: 1.01 }}
               className="col-span-1 bg-orange-600 p-5 md:p-8 flex flex-col justify-between rounded-none shadow-2xl relative overflow-hidden"
@@ -101,7 +94,6 @@ const AboutHero = () => {
               </div>
             </motion.div>
 
-            {/* Card 3: Landscape Metric */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
               className="col-span-2 bg-slate-50 border border-slate-100 p-5 md:p-8 flex items-center justify-between rounded-none shadow-sm"

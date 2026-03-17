@@ -9,13 +9,15 @@
   }
 }
 
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
+@layer utilities {
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
 }
 
-/* Optional: Pause on hover so people can read a specific deal */
-.animate-marquee:hover {
-  animation-play-state: paused;
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }

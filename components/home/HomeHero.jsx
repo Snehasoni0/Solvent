@@ -3,8 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Hero = () => {
+  const router = useRouter();
+
   return (
     <section className="relative h-[85vh] w-full flex items-center justify-center overflow-hidden bg-slate-900">
       {/* Background Image with Overlay */}
@@ -44,7 +47,7 @@ const Hero = () => {
 
           {/* Call to Action Button */}
           <div className="flex flex-col sm:flex-row items-center justify-center">
-            <button className="group relative px-8 py-4 bg-orange-600 text-white font-bold uppercase tracking-widest text-xs flex items-center transition-all hover:bg-orange-700 active:scale-95 cursor-pointer rounded">
+            <button className="group relative px-8 py-4 bg-orange-600 text-white font-bold uppercase tracking-widest text-xs flex items-center transition-all hover:bg-orange-700 active:scale-95 cursor-pointer rounded" onClick={()=>router.push('/about')}>
              Explore more
               <ChevronRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>

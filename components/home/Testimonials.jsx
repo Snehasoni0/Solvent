@@ -38,7 +38,7 @@ const Testimonials = () => {
   const prevStep = () => setIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
 
   return (
-    <section className="py-12 bg-white relative overflow-hidden">
+    <section className="py-0 md:py-12 bg-white relative overflow-hidden">
       {/* Background Decorative Element */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none flex justify-center items-center">
         <Quote size={600} className="text-slate-900" />
@@ -112,10 +112,10 @@ const Testimonials = () => {
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-8 mt-2">
             <button 
               onClick={prevStep}
-              className="p-4 rounded-full border border-slate-200 text-slate-400 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-90"
+              className="p-4 rounded-full border border-slate-200 text-slate-400 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-90 cursor-pointer"
             >
               <ChevronLeft size={24} />
             </button>
@@ -132,7 +132,7 @@ const Testimonials = () => {
 
             <button 
               onClick={nextStep}
-              className="p-4 rounded-full border border-slate-200 text-slate-400 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-90"
+              className="p-4 rounded-full border border-slate-200 text-slate-400 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-90 cursor-pointer"
             >
               <ChevronRight size={24} />
             </button>

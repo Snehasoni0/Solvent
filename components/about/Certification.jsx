@@ -43,9 +43,7 @@ const Certifications = () => {
   const [active, setActive] = useState(0);
 
   return (
-    // Changed py-12 to py-4 and removed min-h-screen for tighter mobile fit
-    <section className="relative w-full bg-white overflow-hidden flex flex-col lg:items-center lg:justify-center px-6 py-4 lg:py-12 font-sans border-t border-slate-100">
-      {/* 1. DESKTOP HEADER AREA (Consistent with Partners/FAQ) */}
+    <section className="relative w-full bg-white overflow-hidden flex flex-col lg:items-center lg:justify-center px-6 py-10 lg:py-12 font-sans border-t border-slate-100">
       <div className="hidden lg:flex w-full max-w-7xl mx-auto flex-col mb-12">
         <div className="flex items-center space-x-2 text-orange-600 mb-2">
           <Scan size={14} className="animate-pulse" />
@@ -55,14 +53,12 @@ const Certifications = () => {
           Trust <span className="text-slate-300 italic">Verified.</span>
         </h2>
       </div>
-      {/* 1. TECHNICAL BACKGROUND (Desktop Only) */}
       <div className="absolute inset-0 pointer-events-none hidden lg:block">
         <div className="absolute inset-0 opacity-[0.03]" 
              style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vh] h-[80vh] border border-slate-100 rounded-full" />
       </div>
 
-      {/* 2. MOBILE HEADER (Reduced margin) */}
       <div className="lg:hidden mb-4">
         <div className="flex items-center space-x-2 text-orange-600 mb-1">
             <Scan size={12} />
@@ -73,11 +69,9 @@ const Certifications = () => {
         </h2>
       </div>
 
-      {/* 3. INTERACTIVE HUB */}
       <div className="relative w-full max-w-5xl lg:h-[70vh] flex flex-col lg:block">
         
-        {/* The Detail Panel (Center on Desktop / Reduced mb on Mobile) */}
-        <div className="relative lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-20 w-full lg:max-w-sm text-center mb-6 lg:mb-0">
+        <div className="relative lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-20 w-full lg:max-w-sm text-center mb-6 lg:mb-0 mt-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -92,7 +86,7 @@ const Certifications = () => {
               <span className="text-[8px] lg:text-[10px] font-black tracking-[0.5em] text-orange-600 uppercase mb-1">
                 {certs[active].tag}
               </span>
-              <h3 className="text-2xl lg:text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2 lg:mb-4 leading-none">
+              <h3 className="text-1xl lg:text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2 lg:mb-4 leading-none">
                 {certs[active].title}
               </h3>
               <p className="text-slate-500 text-[13px] lg:text-sm leading-relaxed font-medium max-w-xs">
@@ -102,7 +96,6 @@ const Certifications = () => {
           </AnimatePresence>
         </div>
 
-        {/* The Nodes (Corners on Desktop / Row Grid on Mobile) */}
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:block gap-3">
           {certs.map((cert, index) => (
             <motion.div

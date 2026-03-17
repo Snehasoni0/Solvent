@@ -45,13 +45,13 @@ const InfoSection = () => {
         </h2>
       </div>
 
-      <div className="max-w-[1440px] mx-auto w-full px-6 md:px-12 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-10">
+      <div className="max-w-360 mx-auto w-full px-6 md:px-12 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-24 lg:gap-20 items-center relative z-10">
         
         {/* LEFT COLUMN: STAGGERED IMAGES */}
         <div className="lg:col-span-5 relative flex items-center justify-center">
           <motion.div 
             style={{ y: imgOneY }}
-            className="relative w-[85%] aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl z-10 border-2 border-slate-50"
+            className="relative w-[85%] aspect-4/5 rounded-[2.5rem] overflow-hidden shadow-2xl z-10 border-2 border-slate-50"
           >
             <img 
               src="https://images.unsplash.com/photo-1590227763209-821c686b932f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
@@ -62,7 +62,7 @@ const InfoSection = () => {
 
           <motion.div 
             style={{ y: imgTwoY }}
-            className="absolute -bottom-8 -left-6 w-[55%] aspect-square rounded-[2rem] overflow-hidden shadow-2xl z-20 border-[10px] border-white"
+            className="absolute -bottom-8 -left-6 w-[55%] aspect-square rounded-4xl overflow-hidden shadow-2xl z-20 border-10 border-white"
           >
              <img 
               src="https://images.unsplash.com/photo-1590227763209-821c686b932f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 

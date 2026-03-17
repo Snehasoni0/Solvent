@@ -21,10 +21,8 @@ const Partners = () => {
   const row2 = solventBrands.slice(4, 8);
 
   return (
-    // Changed h-screen to h-auto and reduced min-height
     <section className="w-full bg-white flex flex-col relative overflow-hidden border-t border-slate-100 font-sans">
 
-      {/* 1. FIXED HEADER AREA */}
       <div className="py-10 px-6 md:px-12 flex flex-col bg-white z-20 shrink-0">
         <div className="flex items-center space-x-2 text-orange-600 mb-2">
           <ShieldCheck size={14} className="animate-pulse" />
@@ -35,16 +33,13 @@ const Partners = () => {
         </h2>
       </div>
 
-      {/* 2. COMPACT MARQUEE AREA - Removed flex-1, set explicit padding */}
       <div className="w-full bg-slate-50/50 relative py-10 md:py-16 overflow-hidden border-y border-slate-100">
 
-        {/* Background Decorative Text - Adjusted size for better fit */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none">
           <h3 className="text-[15vw] font-black uppercase tracking-tighter">SOLVENT</h3>
         </div>
 
         <div className="relative z-10 space-y-4 md:space-y-6">
-          {/* Row 1: Left Scrolling */}
           <div className="relative flex overflow-hidden">
             <motion.div
               animate={{ x: [0, -1200] }}
@@ -67,7 +62,6 @@ const Partners = () => {
             </motion.div>
           </div>
 
-          {/* Row 2: Right Scrolling */}
           <div className="relative flex overflow-hidden">
             <motion.div
               animate={{ x: [-1200, 0] }}
@@ -92,7 +86,6 @@ const Partners = () => {
         </div>
       </div>
 
-      {/* 3. PARTNERSHIP CALL TO ACTION - Reduced padding */}
       <div className="py-8 px-6 md:px-12 bg-white flex flex-col lg:flex-row items-center justify-between gap-6 z-20 shrink-0">
         <div className="max-w-xl text-center lg:text-left">
           <p className="text-[9px] font-black text-orange-600 uppercase tracking-[0.3em] mb-1">Global Supply Chain</p>

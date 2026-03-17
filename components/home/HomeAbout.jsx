@@ -79,12 +79,6 @@ const About = () => {
                 <p className="text-slate-500 text-xs">Formulated to meet and exceed global manufacturer standards.</p>
               </div>
             </div>
-
-            <div className="pt-6 flex justify-center md:justify-start">
-              <button className="px-10 py-4 bg-slate-950 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-orange-600 transition-all duration-300 active:scale-95 shadow-lg rounded cursor-pointer">
-                Our Engineering Story
-              </button>
-            </div>
           </div>
 
         </div>

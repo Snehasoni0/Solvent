@@ -35,10 +35,8 @@ const MissionVision = () => {
   const [activeBlock, setActiveBlock] = useState("mission");
 
   return (
-    // FIXED: Changed to min-h-screen and allowed overflow on mobile, strict h-screen on desktop
     <section className="min-h-screen lg:h-screen w-full bg-white flex flex-col relative overflow-x-hidden border-t border-slate-100 font-sans">
       
-      {/* 1. TOP HEADER */}
       <div className="h-20 w-full px-6 md:px-8 flex justify-between items-center border-b border-slate-100 bg-white z-20 shrink-0">
         <div className="flex flex-col">
           <div className="flex items-center space-x-3">
@@ -63,11 +61,8 @@ const MissionVision = () => {
         </div>
       </div>
 
-      {/* 2. MAIN CONTENT AREA */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
         
-        {/* LEFT: Kinetic Visual Terminal */}
-        {/* FIXED: Reduced height on mobile to prevent pushing text off-screen */}
         <div className="w-full lg:w-1/2 bg-slate-50 relative flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-100 p-8 lg:p-12 min-h-[350px] lg:min-h-0">
            <motion.div 
              animate={{ top: ["0%", "100%", "0%"] }}
@@ -104,7 +99,6 @@ const MissionVision = () => {
            </AnimatePresence>
         </div>
 
-        {/* RIGHT: Interaction Stack */}
         <div className="w-full lg:w-1/2 flex flex-col bg-white shrink-0 lg:shrink">
           {blocks.map((block) => {
             const isActive = activeBlock === block.id;
@@ -118,7 +112,6 @@ const MissionVision = () => {
                   ${!isActive ? 'min-h-[100px] lg:min-h-0' : 'min-h-[250px] lg:min-h-0'}
                 `}
               >
-                {/* Background ID - Hidden on very small mobile to save space */}
                 <span className={`absolute -top-4 -right-4 text-7xl md:text-9xl font-black italic transition-opacity duration-700 hidden sm:block ${isActive ? 'opacity-5 text-orange-600' : 'opacity-[0.03] text-slate-950'}`}>
                   0{block.id === "mission" ? "1" : "2"}
                 </span>

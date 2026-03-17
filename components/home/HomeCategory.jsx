@@ -1,26 +1,66 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue, animate } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // Import the router
 
 const categories = [
-  { name: 'Engine Oil', image: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZW5naW5lJTIwb2lsfGVufDB8fDB8fHww', count: '45' },
-  { name: 'Gear Oil', image: 'https://images.unsplash.com/photo-1701448149877-228f3163604d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z2VhciUyMG9pbHxlbnwwfHwwfHx8MA%3D%3D', count: '12' },
-  { name: 'Grease', image: 'https://images.unsplash.com/photo-1561338800-3aca39ac913e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JlYXNlfGVufDB8fDB8fHww', count: '18' },
-  { name: 'Coolant', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1983&auto=format&fit=crop', count: '08' },
-  { name: 'Filters', image: 'https://images.unsplash.com/photo-1763679112092-053a6eadd72f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dmVoaWNsZSUyMGZpbHRlcnxlbnwwfHwwfHx8MA%3D%3D', count: '32' },
-  { name: 'Batteries', image: 'https://plus.unsplash.com/premium_photo-1658527217852-a4fba95fcd66?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dmVoaWNsZSUyMEJhdHRlcmllc3xlbnwwfHwwfHx8MA%3D%3D', count: '15' },
+  { name: 'Engine Oil', image: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=500&auto=format&fit=crop&q=60', count: '45', slug: 'engine-oil' },
+  { name: 'Gear Oil', image: 'https://images.unsplash.com/photo-1701448149877-228f3163604d?w=500&auto=format&fit=crop&q=60', count: '12', slug: 'gear-oil' },
+  { name: 'Grease', image: 'https://images.unsplash.com/photo-1561338800-3aca39ac913e?w=500&auto=format&fit=crop&q=60', count: '18', slug: 'grease' },
+  { name: 'Coolant', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1983&auto=format&fit=crop', count: '08', slug: 'coolant' },
+  { name: 'Filters', image: 'https://images.unsplash.com/photo-1763679112092-053a6eadd72f?w=500&auto=format&fit=crop&q=60', count: '32', slug: 'filters' },
+  { name: 'Batteries', image: 'https://plus.unsplash.com/premium_photo-1658527217852-a4fba95fcd66?w=500&auto=format&fit=crop&q=60', count: '15', slug: 'batteries' },
 ];
 
-const duplicatedCategories = [...categories, ...categories];
-
 const Categories = () => {
+  const router = useRouter();
   const [isPaused, setIsPaused] = useState(false);
+  const containerRef = useRef(null);
+  const x = useMotionValue(0);
+  
+  const displayCategories = [...categories, ...categories, ...categories];
+
+  useEffect(() => {
+    if (isPaused) return;
+    const controls = animate(x, [0, -2000], {
+      ease: "linear",
+      duration: 50,
+      repeat: Infinity,
+      repeatType: "loop",
+    });
+    return controls.stop;
+  }, [isPaused, x]);
+
+  const handleItemClick = (e, slug) => {
+    setIsPaused(true);
+    const container = containerRef.current;
+    const item = e.currentTarget;
+    
+    if (container && item) {
+      const containerWidth = container.offsetWidth;
+      const itemOffset = item.offsetLeft;
+      const itemWidth = item.offsetWidth;
+      const targetX = -(itemOffset - (containerWidth / 2) + (itemWidth / 2));
+      
+      animate(x, targetX, {
+        type: "spring",
+        stiffness: 200,
+        damping: 30
+      });
+    }
+  };
+
+  // New function to handle the actual navigation
+  const handleExplore = (e, slug) => {
+    e.stopPropagation(); // Prevents the card centering logic from conflicting
+    router.push(`/category/${slug}`);
+  };
 
   return (
-    <section className="py-12 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 mb-16 text-center">
+    <section className="py-0 md:py-12  bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 mb-4 md:mb-16 text-center">
         <span className="text-orange-600 font-bold uppercase tracking-[0.4em] text-[10px]">
           Precision Engineering
         </span>
@@ -29,68 +69,58 @@ const Categories = () => {
         </h2>
       </div>
 
-      {/* Main Container with Hover Detection */}
       <div 
-        className="flex w-full overflow-hidden"
+        ref={containerRef}
+        className="flex w-full overflow-hidden cursor-grab active:cursor-grabbing"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
       >
         <motion.div
-          className="flex space-x-6 whitespace-nowrap"
-          animate={{
-            x: isPaused ? undefined : ["0%", "-50%"],
-          }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 35,
-              ease: "linear",
-            },
-          }}
-          style={{ width: 'fit-content' }}
+          drag="x"
+          dragConstraints={containerRef}
+          style={{ x, width: 'fit-content' }}
+          className="flex space-x-6 whitespace-nowrap px-10"
         >
-          {duplicatedCategories.map((cat, index) => (
-            <div 
+          {displayCategories.map((cat, index) => (
+            <motion.div 
               key={index}
-              className="relative w-[320px] h-[420px] shrink-0 rounded-2xl overflow-hidden bg-slate-100 group/card border border-slate-200 cursor-pointer"
+              onClick={(e) => handleItemClick(e, cat.slug)}
+              className="relative w-[280px] md:w-[320px] h-[380px] md:h-[420px] shrink-0 rounded-2xl overflow-hidden bg-slate-100 group/card border border-slate-200"
             >
-              {/* Zooming Image */}
               <img 
                 src={cat.image} 
                 alt={cat.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-700 lg:group-hover/card:scale-110"
               />
               
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/20 to-transparent opacity-80 group-hover/card:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-80 pointer-events-none" />
 
-              {/* Card UI Content */}
-              <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                <div className="flex justify-between items-start">
-                  <span className="bg-orange-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                    {cat.count} SKUs
-                  </span>
-                </div>
+              <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
+                <span className="bg-orange-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest w-fit">
+                  {cat.count} SKUs
+                </span>
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-none mb-1">
+                    <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tighter leading-none mb-2">
                       {cat.name}
                     </h3>
-                    <div className="h-1 w-8 bg-orange-600 group-hover/card:w-full transition-all duration-500" />
+                    <div className="h-1 bg-orange-600 w-full lg:w-8 lg:group-hover/card:w-full transition-all duration-500" />
                   </div>
 
-                  {/* EXPLORE BUTTON - Slides up on hover */}
                   <div className="overflow-hidden">
-                    <button className="flex items-center space-x-2 bg-white text-slate-950 px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest translate-y-20 group-hover/card:translate-y-0 transition-transform duration-500">
-                      <span>Explore Category</span>
-                      <ArrowRight size={14} className="text-orange-600" />
+                    <button 
+                      onClick={(e) => handleExplore(e, cat.slug)}
+                      className="flex items-center space-x-2 bg-white text-slate-950 px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest pointer-events-auto hover:bg-orange-600 hover:text-white transition-colors cursor-pointer"
+                    >
+                      <span>Explore</span>
+                      <ArrowRight size={14} className="text-orange-500 group-hover:text-white" />
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>

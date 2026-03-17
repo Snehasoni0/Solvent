@@ -34,7 +34,6 @@ const FAQPreview = () => {
   return (
     <section className="w-full bg-white py-12 lg:py-24 px-6 md:px-12 font-sans border-t border-slate-100 relative overflow-hidden">
       
-      {/* 1. SECTION HEADER (Consistent with Certifications/Partners) */}
       <div className="flex flex-col mb-12 lg:mb-20">
         <div className="flex items-center space-x-3 mb-4">
           <HelpCircle size={14} className="text-orange-600" />
@@ -49,7 +48,6 @@ const FAQPreview = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
         
-        {/* 2. THE INTERACTIVE FAQ STACK */}
         <div className="lg:col-span-8 space-y-3">
           {faqs.map((faq, index) => (
             <div 
@@ -92,10 +90,8 @@ const FAQPreview = () => {
           ))}
         </div>
 
-        {/* 3. THE CALL-TO-ACTION PANEL */}
         <div className="lg:col-span-4 sticky top-24">
           <div className="bg-slate-950 p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden group">
-            {/* Background Accent */}
             <div className="absolute top-0 right-0 p-4 opacity-10 text-white group-hover:rotate-12 transition-transform">
                 <ArrowDownRight size={80} />
             </div>

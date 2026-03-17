@@ -38,7 +38,7 @@ const WhyChooseUs = () => {
       <div className="absolute right-0 top-0 h-full w-1/3 bg-slate-50/50 -z-0" />
       
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-16 ">
           
           {/* LEFT: Vertical Sticky Header */}
           <div className="lg:w-1/3">
