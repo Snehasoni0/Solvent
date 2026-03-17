@@ -11,14 +11,11 @@ const Footer = () => {
     <footer className="bg-slate-950 border-t border-slate-900 pt-16 pb-8 font-sans transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4">
         
-        {/* MAIN ROW: 5 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-12 text-left">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-12 mb-12 text-left">
           
-          {/* Col 1: Original Logo & Socials */}
           <div className="flex flex-col justify-between h-full space-y-6">
             <div className="space-y-4">
               <Link href="/" className="inline-block">
-                {/* Removed brightness-0 invert to keep original colors */}
                 <img src="/logo.svg" alt="logo" className="w-20 h-auto" />
               </Link>
               <p className="text-slate-400 text-xs leading-relaxed max-w-[200px]">
@@ -39,7 +36,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Col 2: Company */}
           <div>
             <h4 className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-6">
               Company
@@ -53,7 +49,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Col 3: Browse */}
           <div>
             <h4 className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-6">
               Browse
@@ -66,7 +61,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Col 4: Policies */}
           <div>
             <h4 className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-6">
               Policies
@@ -80,14 +74,12 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Col 5: Functional Contact Links */}
           <div>
             <h4 className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-6">
               Contact Us
               <div className='w-6 h-0.5 bg-orange-600 mt-1'></div>
             </h4>
             <div className="space-y-4">
-              {/* Google Maps Link */}
               <a 
                 href="https://www.google.com/maps/search/?api=1&query=Industrial+Area+Phase+II+Jodhpur+Rajasthan" 
                 target="_blank" 
@@ -100,7 +92,6 @@ const Footer = () => {
                 </span>
               </a>
 
-              {/* Tel Link */}
               <a href="tel:+919876543210" className="grid grid-cols-[20px_1fr] gap-3 group">
                 <Phone className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
                 <span className="text-slate-400 text-[12px] font-bold group-hover:text-orange-500 transition-colors">
@@ -108,7 +99,6 @@ const Footer = () => {
                 </span>
               </a>
 
-              {/* Mail Link */}
               <a href="mailto:baberwalsnehaa@gmail.com" className="grid grid-cols-[20px_1fr] gap-3 group">
                 <Mail className="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition-transform" />
                 <span className="text-slate-400 text-[12px] font-bold group-hover:text-orange-500 transition-colors">
@@ -119,7 +109,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* COPYRIGHT */}
         <div className="border-t border-slate-900 pt-8 mt-8 text-center">
           <p className="text-slate-500 text-[10px] uppercase tracking-[0.25em] font-black">
             © {currentYear} Solvent. All rights reserved.
