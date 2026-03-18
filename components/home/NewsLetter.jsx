@@ -2,19 +2,61 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, CheckCircle2, Sparkles, ArrowRight } from 'lucide-react';
+import { Mail, CheckCircle2, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  // 1. VALIDATION LOGIC
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) {
+
+    // 2. CHECK FOR EMPTY OR INVALID
+    if (!email) {
+      toast.warn("Please enter an email address.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Invalid email format. Please check and try again.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // mode: "no-cors" is used because Google Apps Script doesn't return CORS headers
+      await fetch("https://script.google.com/macros/s/AKfycbzKmJhG7VMEFiWP-eh3v2HaoTtH3mLBHtvWniZMIZtI7z5hP0Z8Q7_ArN68HhuzoW8R/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ formType: "Newsletter", email })
+      });
+
+      toast.success("Subscribed! Stay tuned for updates.", {
+        icon: <Sparkles className="text-orange-500" />,
+        progressClassName: 'orange-progress-bar'
+      },
+      );
+
       setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 4000);
       setEmail("");
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch (err) {
+      toast.error("Signal lost. Please check your connection.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,8 +75,7 @@ const Newsletter = () => {
           variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center"
         >
-
-          {/* LEFT: ENGAGING CONTENT */}
+          {/* LEFT CONTENT */}
           <div className="space-y-8">
             <motion.div variants={fadeUp} className="flex items-center space-x-3">
               <Sparkles size={16} className="text-orange-600" />
@@ -55,7 +96,6 @@ const Newsletter = () => {
               </motion.p>
             </div>
 
-            {/* Social Proof / Benefit Tags */}
             <motion.div variants={fadeUp} className="flex flex-wrap gap-4 pt-2">
               {["Exclusive Offers", "New Arrivals", "Expert Tips"].map((text) => (
                 <div key={text} className="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
@@ -65,35 +105,41 @@ const Newsletter = () => {
               ))}
             </motion.div>
           </div>
-          <motion.div variants={fadeUp} className="relative w-full lg:w-[115%] lg:-ml-[15%]">
-            <form onSubmit={handleSubmit} className="relative z-10">
-              <div className="flex flex-col md:flex-row items-stretch gap-4">
 
-                {/* INPUT WRAPPER */}
+          {/* FORM AREA */}
+          <motion.div variants={fadeUp} className="relative w-full lg:w-[115%] lg:-ml-[15%]">
+            <form onSubmit={handleSubmit} noValidate className="relative z-10">
+              <div className="flex flex-col md:flex-row items-stretch gap-4">
                 <div className="relative flex-[3] group">
                   <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-600 transition-colors">
                     <Mail size={20} />
                   </div>
                   <input
                     type="email"
-                    required
+                    disabled={loading}
                     placeholder="ENTER YOUR CORPORATE EMAIL"
                     value={email}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white py-4 pl-16 pr-8 rounded-2xl text-[13px] font-bold text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-orange-600/5 transition-all border-2 border-slate-100 uppercase tracking-widest shadow-sm"
+                    className="w-full bg-white py-4 pl-16 pr-8 rounded-2xl text-[13px] font-bold text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-orange-600/5 transition-all border-2 border-slate-100 uppercase tracking-widest shadow-sm disabled:opacity-50"
                   />
                 </div>
 
-                {/* BUTTON */}
                 <motion.button
+                  type="submit"
+                  disabled={loading}
+                  // Added a small shake animation on hover if loading is false
                   whileHover={{ scale: 1.02, backgroundColor: "#ea580c" }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-slate-950 text-white px-8 py-7 md:py-0 rounded-2xl text-[13px] font-black uppercase tracking-[0.2em] transition-colors flex items-center justify-center space-x-3 shadow-xl shadow-slate-950/20 cursor-pointer"
+                  className="flex-1 bg-slate-950 text-white px-8 py-7 md:py-0 rounded-2xl text-[13px] font-black uppercase tracking-[0.2em] transition-colors flex items-center justify-center space-x-3 shadow-xl shadow-slate-950/20 cursor-pointer disabled:bg-slate-800"
                 >
-                  <span>Subscribe</span>
-                  <ArrowRight size={18} />
+                  {loading ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <>
+                      <span>Subscribe</span>
+                      <ArrowRight size={18} />
+                    </>
+                  )}
                 </motion.button>
               </div>
 
@@ -125,7 +171,6 @@ const Newsletter = () => {
               )}
             </AnimatePresence>
           </motion.div>
-
         </motion.div>
       </div>
     </section>

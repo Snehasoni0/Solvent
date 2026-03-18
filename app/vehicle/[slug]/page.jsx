@@ -56,7 +56,7 @@ const page = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/80 to-slate-950" />
         </div>
 
-        <Link href="/vehicle" className="absolute top-10 left-10 flex items-center gap-2 text-slate-500 hover:text-orange-600 transition-colors z-20">
+        <Link href="/vehicle" className="absolute top-5 md:top-10 left-0 md:left-10 flex items-center gap-2 text-slate-500 hover:text-orange-600 transition-colors z-20">
           <ArrowLeft size={16} />
           <span className="text-[10px] font-black uppercase tracking-widest">Back to Directory</span>
         </Link>

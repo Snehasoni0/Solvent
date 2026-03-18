@@ -64,7 +64,7 @@ const CategoryDetailPage = () => {
       <section className="relative w-full h-[45vh] flex items-center justify-center overflow-hidden bg-slate-950">
         {/* BACK BUTTON */}
         <Link
-          href="/category" 
+          href="/category"
           className="absolute top-8 left-6 md:top-10 md:left-10 z-20 flex items-center gap-2 text-slate-500 hover:text-orange-600 active:text-orange-600 transition-all group"
         >
           <div className="p-2 rounded-full border border-slate-800 group-hover:border-orange-600/50 group-hover:bg-orange-600/5 transition-all">
@@ -134,13 +134,15 @@ const CategoryDetailPage = () => {
       {/* 3. PRODUCT GRID */}
       <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
             {loading ? (
               // SKELETON STATE
               [...Array(6)].map((_, i) => (
-                <div key={i} className="flex flex-col gap-4">
-                  <div className="aspect-[4/5] bg-slate-100 rounded-2xl animate-pulse" />
-                  <div className="h-3 w-2/3 bg-slate-100 rounded animate-pulse" />
+                <div key={i} className="flex flex-col gap-4 animate-pulse">
+                  <div className="aspect-[4/5] bg-slate-100 rounded-2xl" />
+                  <div className="h-3 w-2/3 bg-slate-100 rounded" />
+                  {/* Added button skeleton to prevent layout shift */}
+                  <div className="h-8 w-full bg-slate-50 rounded-lg mt-auto" />
                 </div>
               ))
             ) : (
@@ -150,27 +152,39 @@ const CategoryDetailPage = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.05 }}
-                  className="group flex flex-col gap-4"
+                  /* UPDATED: h-full ensures equal height across the row */
+                  className="group flex flex-col h-full gap-4"
                 >
                   {/* PRODUCT IMAGE CONTAINER */}
-                  <div className="relative aspect-[4/5] overflow-hidden bg-slate-50 rounded-2xl border border-slate-100 group-hover:border-orange-600/20 transition-all duration-500">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-slate-50 rounded-2xl border border-slate-100 group-hover:border-orange-600/20 transition-all duration-500 shrink-0">
                     <img
                       src={product.img}
                       alt={product.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    {/* Subtle Overlay on Hover */}
                     <div className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/10 transition-colors" />
                   </div>
 
-                  {/* PRODUCT TITLE */}
-                  <div className="px-1">
-                    <h3 className="text-[10px] md:text-[11px] font-black text-slate-950 uppercase italic tracking-widest leading-tight group-hover:text-orange-600 transition-colors">
+                  {/* PRODUCT TITLE & ACTION */}
+                  {/* UPDATED: flex-1 flex-col pushes the button to the bottom */}
+                  <div className="px-1 flex-1 flex flex-col items-center">
+                    <h3 className="text-[10px] md:text-[11px] font-black text-slate-950 uppercase italic tracking-widest leading-tight group-hover:text-orange-600 transition-colors line-clamp-2 h-4">
                       {product.name}
                     </h3>
-                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
+                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1 mb-4">
                       Industrial Grade
                     </p>
+
+                    {/* NEW: WhatsApp Redirection Button */}
+                    <button
+                      onClick={() => {
+                        const message = encodeURIComponent(`Hi, I would like to inquire about the Industrial Grade ${product.name}.`);
+                        window.open(`https://wa.me/919166744297?text=${message}`, '_blank');
+                      }}
+                      className="mt-auto w-full py-2.5 bg-slate-950 text-white rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 cursor-pointer"
+                    >
+                      Inquire Now
+                    </button>
                   </div>
                 </motion.div>
               ))
@@ -180,7 +194,9 @@ const CategoryDetailPage = () => {
           {/* NO RESULTS STATE */}
           {!loading && filteredProducts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">No matching products found</p>
+              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
+                No matching products found
+              </p>
             </div>
           )}
         </div>

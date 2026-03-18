@@ -113,26 +113,54 @@ const BrandDetailPage = () => {
 
       {/* 3. MINIMAL PRODUCT GRID (6 COLS) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
           {loading ? (
             [...Array(6)].map((_, i) => (
               <div key={i} className="flex flex-col gap-4 animate-pulse">
                 <div className="aspect-[4/5] bg-slate-100 rounded-2xl" />
                 <div className="h-4 bg-slate-100 rounded w-3/4" />
+                <div className="h-3 bg-slate-100 rounded w-1/2" />
               </div>
             ))
           ) : (
             filtered.map((product, index) => (
-              <motion.div key={product.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.05 }} className="group">
-                <div className="relative aspect-[4/5] overflow-hidden bg-slate-50 rounded-2xl border border-slate-100 group-hover:border-orange-600/20 transition-all duration-500 mb-4">
-                  <img src={product.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name} />
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                /* UPDATED: Added h-full and flex-col for equal row heights */
+                className="group flex flex-col h-full"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-slate-50 rounded-2xl border border-slate-100 group-hover:border-orange-600/20 transition-all duration-500 mb-4 shrink-0">
+                  <img
+                    src={product.img}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt={product.name}
+                  />
                   <div className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/10 transition-all" />
                 </div>
 
-                <h3 className="text-[10px] md:text-[11px] font-black text-slate-950 uppercase italic tracking-widest leading-tight group-hover:text-orange-600 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">{product.type}</p>
+                {/* UPDATED: flex-1 ensures this area fills the space, pushing the button down */}
+                <div className="flex-1 flex flex-col items-center">
+                  <h3 className="text-[10px] md:text-[11px] font-black text-slate-950 uppercase italic tracking-widest leading-tight group-hover:text-orange-600 transition-colors line-clamp-2 h-4">
+                    {product.name}
+                  </h3>
+                  <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1 mb-4">
+                    {product.type}
+                  </p>
+
+                  {/* NEW: WhatsApp Redirection Button */}
+                  <button
+                    onClick={() => {
+                      const message = encodeURIComponent(`Hi, I'm interested in the ${product.name} (${product.type}). Could you provide more details?`);
+                      window.open(`https://wa.me/919166744297?text=${message}`, '_blank');
+                    }}
+                    className="mt-auto w-full py-2.5 bg-slate-950 text-white rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 cursor-pointer"
+                  >
+                  Inquiry Now
+                  </button>
+                </div>
               </motion.div>
             ))
           )}

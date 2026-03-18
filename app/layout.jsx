@@ -3,7 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppBtn from "@/components/WhatsAppBtn/WhatsAppBtn";
 import DarkFooter from "@/components/DarkFooter";
-
+import CallBtn from "@/components/CallBtn/CallBtn";
+import { ToastContainer } from "react-toastify";
 
 
 export const metadata = {
@@ -17,6 +18,8 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning>
         <Navbar />
         {children}
+        <ToastContainer position="top-right" theme="dark" toastStyle={{ backgroundColor: "#0f172a", color: "#fff" }}/>
+        <CallBtn />
         <WhatsAppBtn />
         <Footer />
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

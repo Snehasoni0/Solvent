@@ -6,45 +6,50 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- UPDATED MOBILE LINK SUB-COMPONENT ---
+
 const MobileNavLink = ({ link, createSlug, closeMenu }) => {
   const [isOpen, setIsOpen] = useState(false);
   const hasDropdown = link.dropdown && link.dropdown.length > 0;
 
-  const handleRowClick = (e) => {
-    if (hasDropdown) {
-      // Prevents the page from changing if we are just opening the menu
-      e.preventDefault(); 
-      setIsOpen(!isOpen);
-    } else {
-      closeMenu();
-    }
-  };
+  // This content is shared whether it's a Link or a Toggle Div
+  const RowContent = (
+    <div className="flex items-center justify-between py-2 w-full">
+      <span
+        className={`text-lg font-black uppercase tracking-widest transition-colors ${
+          isOpen ? 'text-orange-600' : 'text-slate-800'
+        }`}
+      >
+        {link.name}
+      </span>
+
+      {hasDropdown && (
+        <div className={`p-2 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          <ChevronDown size={20} className={isOpen ? 'text-orange-600' : 'text-slate-400'} />
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="border-b border-slate-100 pb-4">
-      {/* Clicking this entire div now toggles the menu. 
-         We use 'cursor-pointer' to show it's interactive.
-      */}
-      <div 
-        onClick={handleRowClick}
-        className="flex items-center justify-between cursor-pointer py-2"
-      >
-        <span
-          className={`text-lg font-black uppercase tracking-widest transition-colors ${
-            isOpen ? 'text-orange-600' : 'text-slate-800'
-          }`}
+      {hasDropdown ? (
+        /* CASE 1: HAS DROPDOWN - CLICK TO OPEN/CLOSE ONLY */
+        <div 
+          onClick={() => setIsOpen(!isOpen)} 
+          className="cursor-pointer"
         >
-          {link.name}
-        </span>
-
-        {hasDropdown && (
-          <div
-            className={`p-2 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-          >
-            <ChevronDown size={20} className={isOpen ? 'text-orange-600' : 'text-slate-400'} />
-          </div>
-        )}
-      </div>
+          {RowContent}
+        </div>
+      ) : (
+        /* CASE 2: NO DROPDOWN - CLICK TO NAVIGATE IMMEDIATELY */
+        <Link 
+          href={link.href} 
+          onClick={closeMenu}
+          className="block"
+        >
+          {RowContent}
+        </Link>
+      )}
 
       <AnimatePresence>
         {hasDropdown && isOpen && (
@@ -64,10 +69,7 @@ const MobileNavLink = ({ link, createSlug, closeMenu }) => {
                     key={item}
                     href={`/${routePrefix}/${createSlug(item)}`}
                     className="text-[10px] font-bold text-slate-500 uppercase hover:text-orange-600 py-2"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevents the parent row click from firing
-                      closeMenu();
-                    }}
+                    onClick={closeMenu}
                   >
                     {item}
                   </Link>
@@ -75,25 +77,20 @@ const MobileNavLink = ({ link, createSlug, closeMenu }) => {
               })}
             </div>
 
-            {link.dropdown.length > 6 && (
-              <Link
-                href={link.href}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeMenu();
-                }}
-                className="inline-block mt-4 pl-2 text-[10px] font-black uppercase tracking-[0.15em] text-orange-600 border-l-2 border-orange-600"
-              >
-                See All {link.name} →
-              </Link>
-            )}
+            {/* Navigation for the main category page happens here */}
+            <Link
+              href={link.href}
+              onClick={closeMenu}
+              className="inline-block mt-4 pl-2 text-[10px] font-black uppercase tracking-[0.15em] text-orange-600 border-l-2 border-orange-600 py-1"
+            >
+              See All {link.name} →
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 };
-
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

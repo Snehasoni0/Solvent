@@ -31,7 +31,7 @@ const Page = () => {
   }, [brandName]);
 
   // Filter products based on search input
-  const filteredProducts = products.filter(p => 
+  const filteredProducts = products.filter(p =>
     p.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -82,7 +82,7 @@ const Page = () => {
 
           <div className="relative w-full md:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
+            <input
               type="text"
               placeholder="SEARCH BY PRODUCT NAME..."
               value={searchQuery}
@@ -102,21 +102,35 @@ const Page = () => {
         ) : (
           <>
             {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
                 {filteredProducts.map(p => (
-                  <div key={p.id} className="border border-slate-100 rounded-xl overflow-hidden group bg-white hover:shadow-xl transition-all duration-300">
-                    <div className="h-40 overflow-hidden">
-                       <img src={p.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={p.title} />
+                  /* CHANGED: Added 'flex flex-col h-full' to ensure equal height */
+                  <div key={p.id} className="flex flex-col h-full border border-slate-100 rounded-xl overflow-hidden group bg-white hover:shadow-xl transition-all duration-300">
+
+                    <div className="h-40 overflow-hidden shrink-0">
+                      <img
+                        src={p.img}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt={p.title}
+                      />
                     </div>
-                    <div className='p-2 text-center'>
-                      <h3 className="font-black uppercase text-[10px] tracking-widest pt-2 mb-3 line-clamp-2 text-slate-900 leading-tight">
-                        {p.title}
-                      </h3>
+
+                    {/* CHANGED: 'flex-1 flex flex-col justify-between' pushes button to the bottom */}
+                    <div className='p-3 text-center flex-1 flex flex-col justify-between bg-white'>
+                      <div>
+                        <h3 className="font-black uppercase text-[10px] tracking-widest pt-2 mb-3 line-clamp-2 text-slate-900 leading-tight h-8">
+                          {p.title}
+                        </h3>
+                      </div>
+
                       <button
-                        onClick={() => window.open(`https://wa.me/91XXXXXXXXXX?text=Inquiry: ${p.title}`)}
-                        className="w-full py-3 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase hover:bg-orange-600 transition-colors cursor-pointer active:bg-orange-600 active:text-white"
+                        onClick={() => {
+                          const message = encodeURIComponent(`Hello, I am interested in inquiring about: ${p.title}`);
+                          window.open(`https://wa.me/919166744297?text=${message}.`, '_blank');
+                        }}
+                        className="w-full py-3 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase hover:bg-orange-600 transition-colors cursor-pointer active:bg-orange-600 active:text-white mt-2"
                       >
-                        Contact to Buy
+                        Inquire Now
                       </button>
                     </div>
                   </div>
@@ -124,7 +138,9 @@ const Page = () => {
               </div>
             ) : (
               <div className="text-center py-20">
-                <p className="text-slate-400 font-black uppercase tracking-widest">No products found for "{searchQuery}"</p>
+                <p className="text-slate-400 font-black uppercase tracking-widest">
+                  No products found for "{searchQuery}"
+                </p>
               </div>
             )}
           </>
