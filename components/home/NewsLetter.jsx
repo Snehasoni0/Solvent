@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, CheckCircle2, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { Mail, CheckCircle2, Sparkles, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 const Newsletter = () => {
@@ -19,42 +19,41 @@ const Newsletter = () => {
       );
   };
 
+  // Helper to check if we should show error state while typing
+  const isInvalid = email.length > 0 && !validateEmail(email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 2. CHECK FOR EMPTY OR INVALID
     if (!email) {
-      toast.warn("Please enter an email address.");
+      toast.warn("Protocol Error: Email required.");
       return;
     }
 
     if (!validateEmail(email)) {
-      toast.error("Invalid email format. Please check and try again.");
+      toast.error("Invalid Transmission: Check email format.");
       return;
     }
 
     setLoading(true);
 
     try {
-      // mode: "no-cors" is used because Google Apps Script doesn't return CORS headers
       await fetch("https://script.google.com/macros/s/AKfycbzKmJhG7VMEFiWP-eh3v2HaoTtH3mLBHtvWniZMIZtI7z5hP0Z8Q7_ArN68HhuzoW8R/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({ formType: "Newsletter", email })
       });
 
-      toast.success("Subscribed! Stay tuned for updates.", {
+      toast.success("Transmission Confirmed! Welcome aboard.", {
         icon: <Sparkles className="text-orange-500" />,
         progressClassName: 'orange-progress-bar'
-      },
-      );
+      });
 
       setSubmitted(true);
       setEmail("");
       setTimeout(() => setSubmitted(false), 4000);
     } catch (err) {
-      toast.error("Signal lost. Please check your connection.");
-      console.error(err);
+      toast.error("Signal lost. Re-initiate connection.");
     } finally {
       setLoading(false);
     }
@@ -111,26 +110,49 @@ const Newsletter = () => {
             <form onSubmit={handleSubmit} noValidate className="relative z-10">
               <div className="flex flex-col md:flex-row items-stretch gap-4">
                 <div className="relative flex-[3] group">
-                  <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-600 transition-colors">
+                  <div className={`absolute left-6 top-1/2 -translate-y-1/2 transition-colors duration-300 ${
+                    isInvalid ? "text-red-500" : "text-slate-400 group-focus-within:text-orange-600"
+                  }`}>
                     <Mail size={20} />
                   </div>
+                  
                   <input
                     type="email"
                     disabled={loading}
                     placeholder="ENTER YOUR CORPORATE EMAIL"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white py-4 pl-16 pr-8 rounded-2xl text-[13px] font-bold text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-orange-600/5 transition-all border-2 border-slate-100 uppercase tracking-widest shadow-sm disabled:opacity-50"
+                    className={`w-full bg-white py-4 pl-16 pr-8 rounded-2xl text-[13px] font-bold tracking-widest shadow-sm transition-all border-2 outline-none focus:ring-4 disabled:opacity-50 ${
+                      isInvalid 
+                        ? "border-red-500 text-red-600 focus:ring-red-500/5" 
+                        : "border-slate-100 text-slate-900 focus:ring-orange-600/5 focus:border-orange-600"
+                    }`}
                   />
+
+                  {/* Real-time Error Message */}
+                  <AnimatePresence>
+                    {isInvalid && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="absolute -bottom-6 left-2 flex items-center space-x-1"
+                      >
+                        <AlertCircle size={10} className="text-red-500" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-red-500">
+                          Invalid Parameters: Format Error
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <motion.button
                   type="submit"
-                  disabled={loading}
-                  // Added a small shake animation on hover if loading is false
-                  whileHover={{ scale: 1.02, backgroundColor: "#ea580c" }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-slate-950 text-white px-8 py-7 md:py-0 rounded-2xl text-[13px] font-black uppercase tracking-[0.2em] transition-colors flex items-center justify-center space-x-3 shadow-xl shadow-slate-950/20 cursor-pointer disabled:bg-slate-800"
+                  disabled={loading || isInvalid}
+                  whileHover={!loading && !isInvalid ? { scale: 1.02, backgroundColor: "#ea580c" } : {}}
+                  whileTap={!loading && !isInvalid ? { scale: 0.98 } : {}}
+                  className="flex-1 bg-slate-950 text-white px-8 py-7 md:py-0 rounded-2xl text-[13px] font-black uppercase tracking-[0.2em] transition-colors flex items-center justify-center space-x-3 shadow-xl shadow-slate-950/20 cursor-pointer disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <Loader2 size={18} className="animate-spin" />
@@ -144,7 +166,7 @@ const Newsletter = () => {
               </div>
 
               {/* Security Badges */}
-              <div className="mt-6 flex items-center space-x-6 px-2">
+              <div className="mt-8 flex items-center space-x-6 px-2">
                 <div className="flex items-center space-x-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">SSL Encrypted</span>
